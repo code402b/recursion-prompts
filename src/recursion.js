@@ -18,6 +18,9 @@ var factorial = function(n) {
 
 // 2. Compute the sum of an array of integers.
 // sum([1,2,3,4,5,6]); // 21
+// theres no accumulator needed here because there is only the base case
+// base case = a number, and we know every element of the array is a number
+// therefore the returns stack after the + operator when the recursive call is made
 var sum = function(array) {
   if (array.length === 0){
     return 0;
@@ -27,6 +30,25 @@ var sum = function(array) {
 
 // 3. Sum all numbers in an array containing nested arrays.
 // arraySum([1,[2,3],[[4]],5]); // 15
+// IN THIS CASE, the recursive calls stack in the forEach loop,
+// where they are accumulated in the result variable,
+// the base case values piped in through the recursive calls
+var arraySum = function(array) {
+
+  var result = 0;
+
+  if (!Array.isArray(array)) {
+    //base case
+    return array;
+  }
+
+  array.forEach(function(item) {
+    result += arraySum(item);
+  });
+
+  return result;
+
+};
 // INNERFUNCTION PATTERN
 // var arraySum = function(array) {
 //   var result = 0;
@@ -45,38 +67,26 @@ var sum = function(array) {
 //   return result;
 // };
 
-var arraySum = function(array) {
-
-  var result = 0;
-
-  if (!Array.isArray(array)) {
-    //base case
-    return array;
-  }
-
-  array.forEach(function(item) {
-    result += arraySum(item);
-  });
-
-  return result;
-
-};
-
 
 
 // 4. Check if a number is even.
 var isEven = function(n) {
   if (n === 0) {
     return true;
-  } else if (n === 1) {
-    return false;
-  } else {
-    if (n > 0) {
-      return isEven(n - 2);
-    } else if (n < 0) {
-      return isEven(n + 2);
-    }
   }
+
+  if (n === 1) {
+    return false;
+  }
+
+  if (n > 0) {
+      return isEven(n - 2);
+  }
+
+  if (n < 0) {
+      return isEven(n + 2);
+  };
+
 
 };
 
@@ -98,24 +108,20 @@ var sumBelow = function(n) {
 // 6. Get the integers within a range (x, y).
 // range(2,9); // [3,4,5,6,7,8]
 var range = function(x, y) {
-  var result = [];
+  // var result = [];
 
-  var innerFunction = function(x,y) {
-    if (x > y) {
-      while (x > y) {
-        x += x - 1
-        return x;
-      }
-    } else {
-      while (y > x) {
-        x += x + 1
-        return x;
-      }
-    }
-  }
-
-
-
+  // if (x > y) {
+  //     while (x > y) {
+  //       x += x - 1
+  //       return x;
+  //     }
+  //   } else {
+  //     while (y > x) {
+  //       x += x + 1
+  //       return x;
+  //     }
+  //   }
+  // }
 };
 // var range = function(x, y) {
 //   if ( x === y) {
@@ -137,14 +143,33 @@ var exponent = function(base, exp) {
   if (exp === 0) {
     return 1;
   }
-  //var operator = exp > 0 ? exp - 1 : exp + 1;
-  if (exp > 0) {
-    return base * exponent(base, exp - 1);
+  // if exp is pos and even
+  if (exp > 0 && exp % 2 === 0) {
+    var y = exponent(base, exp / 2);
+    return y * y;
   }
+  // if exp is positive and odd
+  if (exp > 0 && exp % 2 !== 0) {
+    var y = exponent(base, exp - 1);
+    return y * base;
+  }
+  // if exp is negative
   if (exp < 0) {
-    return base * exponent(base, exp + 1);
+    var y = exponent(base, -exp);
+    return 1 / y;
   }
 };
+
+// if (exp === 0) {
+//   return 1;
+// }
+// //var operator = exp > 0 ? exp - 1 : exp + 1;
+// if (exp > 0) {
+//   return base * exponent(base, exp - 1);
+// }
+// if (exp < 0) {
+//   return base * exponent(base, exp + 1);
+// }
 
 // 8. Determine if a number is a power of two.
 // powerOfTwo(1); // true
