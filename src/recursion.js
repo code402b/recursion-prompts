@@ -388,7 +388,7 @@ var rMap = function(array, callback) {
 var countKeysInObj = function(obj, target) {
   var count = 0;
 
-  if (typeof obj === 'obj=ect') {
+  if (typeof obj === 'object') {
     count = Object.keys(obj).filter(function(key) {
       return key === target;
     }).length;
