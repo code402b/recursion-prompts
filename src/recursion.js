@@ -153,6 +153,16 @@ var exponent = function(base, exp) {
 // powerOfTwo(16); // true
 // powerOfTwo(10); // false
 var powerOfTwo = function(n) {
+  if (n === 1) {
+    return true
+  }
+  if (n < 1) {
+    return false;
+  }
+  return powerOfTwo(n / 2);
+  // mathematical solution:
+  // return Number.isInteger(Math.log2(n));
+  // if log2 (binary logarith) of n is an integer, n is a power of two
 };
 
 // 9. Write a function that reverses a string.
@@ -377,8 +387,10 @@ var rMap = function(array, callback) {
 // countKeysInObj(obj, 'e') // 2
 var countKeysInObj = function(obj, target) {
   var count = 0;
-  if (typeof obj !== 'object') {
-    return obj;
+  if (typeof obj === 'object') {
+    return Object.keys(obj).filter(function(key) {
+      key == target;
+    }).length;
   }
   for (key in obj) {
     count += countKeysInObj(obj[key], key);
