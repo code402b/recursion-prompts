@@ -196,36 +196,46 @@ var palindrome = function(string) {
 // modulo(22,6) // 4
 // https://stackoverflow.com/questions/48348520/how-to-solve-modulo-using-recursioncant-use-or-math-operator
 var modulo = function(x, y) {
+  // division by 0 is impossible, constraint case
   if (y === 0) {
     return NaN;
   }
+  // makes both inputs positive so function runs properly
+  // while preserving result sign
   if (x < 0) {
-    return -modulo(-x, y);
+    return -modulo(-x, y); // -27 % 4 -> -(27 % 4)
   }
   if (y < 0) {
-    return modulo(x, -y);
+    return modulo(x, -y); // 27 % -4 -> 27 % 4
   }
+  // once x is less than divisor, x represents the remainder
   if (x < y) {
     return x;
   }
-
+  // each call subtracts divisor from x
   return modulo(x - y, y);
 };
 
 // 12. Write a function that multiplies two numbers without using the * operator or
 // Math methods.
+// like modulo, this finds the simplest recursive case,
+// and transforms the arguments before recalling the function,
+// using negation operators to preseve result
 var multiply = function(x, y) {
   if (y === 0) {
     return 0;
   }
+  if (x < 0 && y < 0) {
+    return multiply(-x, -y);
+  }
+  if (x < 0) {
+    return -multiply(-x, y);
+  }
+  if (y < 0) {
+    return -multiply(x, -y);
+  }
   return x + multiply(x, y - 1);
 };
-// var multiply = function(x, y) {
-//   if (x === 0 || y === 0) {
-//     return 0;
-//   }
-//   return y + multiply(x - 1, y);
-// };
 
 // 13. Write a function that divides two numbers without using the / operator or
 // Math methods to arrive at an approximate quotient (ignore decimal endings).
@@ -245,15 +255,40 @@ var gcd = function(x, y) {
 // compareStr('house', 'houses') // false
 // compareStr('tomato', 'tomato') // true
 var compareStr = function(str1, str2) {
+  if (str1.length !== str2.length) {
+    return false;
+  }
+  if (str1.length === 0 && str2.length === 0) {
+    return true;
+  }
+  if (str1[str1.length - 1] === str2[str2.length - 1]) {
+    return compareStr(str1.slice(0, -1), str2.slice(0, -1))
+  }
+  return false;
 };
 
 // 16. Write a function that accepts a string and creates an array where each letter
 // occupies an index of the array.
+// concat makes this straightforward to pass data
+// ['t'].concat(['e'])
+// flatten example pipes in each value once a number is found
+// ^ ie once the recursive process found its end
+// these are unnested recursion
+// this example pipes in an empty array once stopping
+// point for entire process is found
 var createArray = function(str) {
+  if (str.length === 0) {
+    return [];
+  }
+  return [str[0]].concat(createArray(str.slice(1)));
 };
 
 // 17. Reverse the order of an array
 var reverseArr = function(array) {
+  if (array.length === 0) {
+    return [];
+  }
+  return [array[array.length - 1]].concat(reverseArr(array.slice(0, -1)));
 };
 
 // 18. Create a new array with a given value and length.
