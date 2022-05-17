@@ -120,19 +120,7 @@ var range = function(x, y) {
     }
     return [x - 1].concat(range(x - 1, y));
   }
-
-  //return result;
 };
-// var range = function(x, y) {
-//   if ( x === y) {
-//     return [];
-//   }
-//   if (x - y === 1 || -1) {
-//     return [];
-//   }
-//   return [].push(range(x + 1));
-
-// };
 
 // 7. Compute the exponent of a number.
 // The exponent of a number says how many times the base number is used as a factor.
@@ -375,13 +363,27 @@ var countOccurrence = function(array, value) {
 // 21. Write a recursive version of map.
 // rMap([1,2,3], timesTwo); // [2,4,6]
 var rMap = function(array, callback) {
+  if (array.length === 0) {
+    return [];
+  }
+  return [callback(array[0])].concat(rMap(array.slice(1), callback));
+
 };
 
+//RECOMMENDED
 // 22. Write a function that counts the number of times a key occurs in an object.
 // var obj = {'e':{'x':'y'},'t':{'r':{'e':'r'},'p':{'y':'r'}},'y':'e'};
 // countKeysInObj(obj, 'r') // 1
 // countKeysInObj(obj, 'e') // 2
-var countKeysInObj = function(obj, key) {
+var countKeysInObj = function(obj, target) {
+  var count = 0;
+  if (typeof obj !== 'object') {
+    return obj;
+  }
+  for (key in obj) {
+    count += countKeysInObj(obj[key], key);
+  };
+  return count;
 };
 
 // 23. Write a function that counts the number of times a value occurs in an object.
@@ -389,12 +391,21 @@ var countKeysInObj = function(obj, key) {
 // countValuesInObj(obj, 'r') // 2
 // countValuesInObj(obj, 'e') // 1
 var countValuesInObj = function(obj, value) {
+  var count = 0;
+  if (typeof obj !== 'object') {
+    return obj === value ? 1 : 0;
+  }
+  for (key in obj) {
+    count += countValuesInObj(obj[key], value);
+  };
+  return count;
 };
 
 // 24. Find all keys in an object (and nested objects) by a provided name and rename
 // them to a provided new name while preserving the value stored at that key.
 var replaceKeysInObj = function(obj, oldKey, newKey) {
 };
+//RECOMMENDED
 
 // 25. Get the first n Fibonacci numbers. In the Fibonacci sequence, each subsequent
 // number is the sum of the previous two.
