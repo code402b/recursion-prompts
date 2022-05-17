@@ -108,20 +108,18 @@ var sumBelow = function(n) {
 // 6. Get the integers within a range (x, y).
 // range(2,9); // [3,4,5,6,7,8]
 var range = function(x, y) {
-  // var result = [];
+  var result = [];
 
-  // if (x > y) {
-  //     while (x > y) {
-  //       x += x - 1
-  //       return x;
-  //     }
-  //   } else {
-  //     while (y > x) {
-  //       x += x + 1
-  //       return x;
-  //     }
-  //   }
-  // }
+  if (x < y) {
+    result.concat(range(x + 1, y));
+    return x + 1;
+  }
+  if (x > y) {
+    result.concat(range(x - 1, y));
+    return x - 1;
+  }
+
+  return result;
 };
 // var range = function(x, y) {
 //   if ( x === y) {
@@ -160,17 +158,6 @@ var exponent = function(base, exp) {
   }
 };
 
-// if (exp === 0) {
-//   return 1;
-// }
-// //var operator = exp > 0 ? exp - 1 : exp + 1;
-// if (exp > 0) {
-//   return base * exponent(base, exp - 1);
-// }
-// if (exp < 0) {
-//   return base * exponent(base, exp + 1);
-// }
-
 // 8. Determine if a number is a power of two.
 // powerOfTwo(1); // true
 // powerOfTwo(16); // true
@@ -180,6 +167,11 @@ var powerOfTwo = function(n) {
 
 // 9. Write a function that reverses a string.
 var reverse = function(string) {
+  var result = '';
+  if (string.length > 0) {
+  result += string[string.length - 1] + reverse(string.slice(0, -1));
+  }
+  return result;
 };
 
 // 10. Write a function that determines if a string is a palindrome.
