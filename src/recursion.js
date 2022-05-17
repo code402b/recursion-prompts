@@ -34,21 +34,18 @@ var sum = function(array) {
 // where they are accumulated in the result variable,
 // the base case values piped in through the recursive calls
 var arraySum = function(array) {
-
   var result = 0;
-
   if (!Array.isArray(array)) {
     //base case
     return array;
   }
-
   array.forEach(function(item) {
     result += arraySum(item);
   });
-
   return result;
 
 };
+
 // INNERFUNCTION PATTERN
 // var arraySum = function(array) {
 //   var result = 0;
@@ -108,18 +105,23 @@ var sumBelow = function(n) {
 // 6. Get the integers within a range (x, y).
 // range(2,9); // [3,4,5,6,7,8]
 var range = function(x, y) {
-  var result = [];
-
+  if (x === y) {
+    return [];
+  }
   if (x < y) {
-    result.concat(range(x + 1, y));
-    return x + 1;
+    if (x === y - 1) {
+      return [];
+    }
+    return [x + 1].concat(range(x + 1, y));
   }
   if (x > y) {
-    result.concat(range(x - 1, y));
-    return x - 1;
+    if (x === y + 1) {
+      return [];
+    }
+    return [x - 1].concat(range(x - 1, y));
   }
 
-  return result;
+  //return result;
 };
 // var range = function(x, y) {
 //   if ( x === y) {
@@ -239,7 +241,25 @@ var multiply = function(x, y) {
 
 // 13. Write a function that divides two numbers without using the / operator or
 // Math methods to arrive at an approximate quotient (ignore decimal endings).
+// 4 / 2
 var divide = function(x, y) {
+  var result = 0;
+  if (y === 0) {
+    return NaN;
+  }
+  if (x < 0 && y < 0) {
+    return divide(-x, -y);
+  }
+  if (x < 0) {
+    return -divide(-x, y);
+  }
+  if (y < 0) {
+    return -divide(x, -y);
+  }
+  if (x < y) {
+    return 1;
+  }
+  return result += divide(x - y, y);
 };
 
 // 14. Find the greatest common divisor (gcd) of two positive numbers. The GCD of two
@@ -295,6 +315,10 @@ var reverseArr = function(array) {
 // buildList(0,5) // [0,0,0,0,0]
 // buildList(7,3) // [7,7,7]
 var buildList = function(value, length) {
+  if (length === 0) {
+    return [];
+  }
+  return [value].concat(buildList(value, length - 1));
 };
 
 // 19. Implement FizzBuzz. Given integer n, return an array of the string representations of 1 to n.
@@ -302,14 +326,51 @@ var buildList = function(value, length) {
 // For multiples of five, output 'Buzz' instead of the number.
 // For numbers which are multiples of both three and five, output “FizzBuzz” instead of the number.
 // fizzBuzz(5) // ['1','2','Fizz','4','Buzz']
+// creates right values but backwards, fix?
 var fizzBuzz = function(n) {
+  var value = n.toString();
+  if (n === 0) {
+    return [];
+  }
+  if (n % 3 === 0 && n % 5 === 0) {
+    value = 'FizzBuzz';
+  }
+  if (n % 3 === 0) {
+    value = 'Fizz';
+  }
+  if (n % 5 === 0) {
+    value = 'Buzz';
+  }
+  return [value].concat(fizzBuzz(n - 1));
 };
 
 // 20. Count the occurrence of a value in a list.
 // countOccurrence([2,7,4,4,1,4], 4) // 3
 // countOccurrence([2,'banana',4,4,1,'banana'], 'banana') // 2
 var countOccurrence = function(array, value) {
-};
+  if(array.length === 0) {
+    return 0;
+  }
+  return (array[0] === value) + countOccurrence(array.slice(1), value);
+}
+
+// modeled off of arraySum, unneccessary
+// var countOccurrence = function(array, value) {
+//   var count = 0;
+
+//   if(!Array.isArray(array)) {
+//     if (array === value) {
+//       return 1;
+//     } else {
+//       return 0;
+//     }
+//   }
+
+//   array.forEach(function(item) {
+//     count += countOccurrence(item, value);
+//   });
+//   return count;
+// };
 
 // 21. Write a recursive version of map.
 // rMap([1,2,3], timesTwo); // [2,4,6]
