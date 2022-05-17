@@ -169,13 +169,27 @@ var powerOfTwo = function(n) {
 var reverse = function(string) {
   var result = '';
   if (string.length > 0) {
-  result += string[string.length - 1] + reverse(string.slice(0, -1));
+    result += string[string.length - 1] + reverse(string.slice(0, -1));
   }
   return result;
 };
 
 // 10. Write a function that determines if a string is a palindrome.
+// should be checking every letter rather than building a new string
+// not checking every time you recurse is defeating the purpose
 var palindrome = function(string) {
+  //var check = '';
+  if (string.length === 1 || 0) {
+    return true;
+  }
+  if (string.length > 1) {
+    if (string[0].toLowerCase() === string[string.length -1].toLowerCase()) {
+      return palindrome(string.slice(1, -1));
+    }
+    return false
+  }
+
+  //return check;
 };
 
 // 11. Write a function that returns the remainder of x divided by y without using the
