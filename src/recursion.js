@@ -330,16 +330,16 @@ var fizzBuzz = function(n) {
   if (n === 0) {
     return [];
   }
-  if (n % 3 === 0 && n % 5 === 0) {
-    value = 'FizzBuzz';
-  }
   if (n % 3 === 0) {
     value = 'Fizz';
   }
   if (n % 5 === 0) {
     value = 'Buzz';
   }
-  return [value].concat(fizzBuzz(n - 1));
+  if (n % 3 === 0 && n % 5 === 0) {
+    value = 'FizzBuzz';
+  }
+  return fizzBuzz(n - 1).concat([value]);
 };
 
 // 20. Count the occurrence of a value in a list.
@@ -387,14 +387,17 @@ var rMap = function(array, callback) {
 // countKeysInObj(obj, 'e') // 2
 var countKeysInObj = function(obj, target) {
   var count = 0;
-  if (typeof obj === 'object') {
-    return Object.keys(obj).filter(function(key) {
-      key == target;
+
+  if (typeof obj === 'obj=ect') {
+    count = Object.keys(obj).filter(function(key) {
+      return key === target;
     }).length;
+
+    for (key in obj) {
+      count += countKeysInObj(obj[key], target);
+    };
   }
-  for (key in obj) {
-    count += countKeysInObj(obj[key], key);
-  };
+
   return count;
 };
 
